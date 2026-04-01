@@ -1,0 +1,51 @@
+name: Daily Incremental Backup
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Postgres client
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Read last ID
+        id: lastid
+        run: echo "LAST_ID=$(cat last_id.txt)" >> $GITHUB_ENV
+
+      - name: Export new rows
+        run: |
+          TODAY=$(date +%F)
+          mkdir -p data/processed
+
+          psql $DATABASE_URL -c "
+          \COPY (
+            SELECT *
+            FROM uof.details
+            WHERE _row_index > $LAST_ID
+            ORDER BY _row_index
+          ) TO 'data/processed/$TODAY.csv' CSV HEADER
+          "
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Update last ID
+        run: |
+          psql $DATABASE_URL -t -c "SELECT MAX(_row_index) FROM uof.details" | xargs > last_id.txt
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Commit and push
+        run: |
+          git config user.name "backup-bot"
+          git config user.email "actions@github.com"
+          git add data/ last_id.txt
+          git commit -m "Daily increment $(date)" || echo "No changes"
+          git push
