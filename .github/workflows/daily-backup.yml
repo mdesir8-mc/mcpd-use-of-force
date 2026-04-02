@@ -24,15 +24,13 @@ jobs:
         run: |
           TODAY=$(date +%F)
           mkdir -p data/processed
-
-          psql $DATABASE_URL -c "
-          \COPY (
+          
+          psql $DATABASE_URL -c "\COPY (
             SELECT *
             FROM uof.details
             WHERE _row_index > $LAST_ID
             ORDER BY _row_index
-          ) TO 'data/processed/$TODAY.csv' CSV HEADER
-          "
+          ) TO 'data/processed/$TODAY.csv' CSV HEADER"
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
