@@ -18,7 +18,7 @@ jobs:
 
       - name: Read last ID
         id: lastid
-        run: echo "LAST_ID=$(cat last_id.txt)" >> $GITHUB_ENV
+        run: echo "LAST_ID=$(cat data/processed/last_id.txt)" >> $GITHUB_ENV
 
       - name: Export new rows
         run: |
@@ -38,7 +38,7 @@ jobs:
 
       - name: Update last ID
         run: |
-          psql $DATABASE_URL -t -c "SELECT MAX(_row_index) FROM uof.details" | xargs > last_id.txt
+          psql $DATABASE_URL -t -c "SELECT MAX(_row_index) FROM uof.details" | xargs > data/processed/last_id.txt
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
@@ -46,6 +46,6 @@ jobs:
         run: |
           git config user.name "backup-bot"
           git config user.email "actions@github.com"
-          git add data/ last_id.txt
+          git add data/
           git commit -m "Daily increment $(date)" || echo "No changes"
           git push
