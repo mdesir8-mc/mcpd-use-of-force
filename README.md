@@ -7,5 +7,7 @@ This repository contains the sum total of all data, ingestion techniques, pipeli
 
 #### Tools used
 Pipeline: OData, Apache Airflow, Neon Postgres DB
-Statistical and exploratory analysis: Python (Jupyter/Colab, IDLE, )
+
+Statistical and exploratory analysis: Python (Jupyter/Colab, IDLE), R (RStudio)
+
 Visualizations and dashboard: Tableau
