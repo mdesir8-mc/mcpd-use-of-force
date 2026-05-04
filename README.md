@@ -12,5 +12,5 @@ Statistical and exploratory analysis: Python (Jupyter/Colab, VSCode, IDLE), R (R
 
 Visualizations and dashboard: Tableau
 
-#### Final product
+### Final product
 [MCPD Use of Force Dashboard - Michael Desir](https://public.tableau.com/views/MCPDUseofForceDashboard/Dashboard-Main?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link)
