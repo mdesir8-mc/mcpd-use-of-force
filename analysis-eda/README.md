@@ -1,6 +1,6 @@
-# analysis-eda
+# Analysis incl. EDA
 
-Exploratory data analysis of Montgomery County Police Department (MCPD) use-of-force records (2022 – March 2026). Source data is the `uof.details` table in a Neon PostgreSQL database; each row represents one officer–subject interaction, with `reportguid` identifying the incident and `officerguid` identifying the officer.
+Exploratory data analysis of Montgomery County Police Department (MCPD) use-of-force records (2022 – March 2026). Source data is the `uof.details` table in a Neon PostgreSQL database derived from Montgomery County OpenData records; each row represents one officer–subject interaction, with `reportguid` identifying the interaction and `cr_or_event` identifying the incident.
 
 ---
 
@@ -53,20 +53,3 @@ Two complementary views: a single multi-line chart with all districts overlaid, 
 | `images/q7_overall_trend.png` | Q7 monthly trend + rolling average |
 | `images/q8_trend_by_district_multiline.png` | Q8 multi-line overlay |
 | `images/q8_trend_by_district_faceted.png` | Q8 per-district faceted panel |
-
-Published write-ups: [UoF EDA #1 (RPubs)](https://rpubs.com/mdesir8/uof-eda-1)
-
----
-
-## Directory Layout
-
-```
-analysis-eda/
-├── images/          # exported chart PNGs (see table above)
-├── notebooks/
-│   ├── UOF_scratch_work_1.ipynb   # early exploration
-│   ├── UOF_scratch_work_2.ipynb   # early exploration
-│   └── analysis_executed.ipynb    # full executed analysis
-└── scripts/
-    └── analysis_executed.ipynb    # copy used for export/publishing
-```
