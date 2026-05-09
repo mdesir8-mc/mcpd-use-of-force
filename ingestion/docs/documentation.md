@@ -1,0 +1,5 @@
+### Ingestion processing docs
+
+Each DAG follows the same three-step pattern: fetch, clean, load. The cleaning step is minimal and consistent across all three pipelines. Column names are lowercased and spaces replaced with underscores. Duplicate rows are dropped, as are rows where every field is null. String columns are stripped of leading and trailing whitespace, and any pandas-generated "nan" strings are converted back to null. Columns containing nested structures like geolocation dictionaries are serialized to JSON strings before deduplication to avoid comparison errors. Two metadata columns are appended to every record: a row index and a load timestamp.
+
+The dispatch pipeline has one additional step downstream. After loading to `uof.dispatch`, it triggers a separate DAG that performs a point-in-polygon spatial join against the MCPD police district shapefile using GeoPandas. Records with valid latitude and longitude coordinates are matched to a district polygon and written to `uof.dispatch_geo` with the corresponding shapefile object ID. Records missing coordinates are included in the output with a null district value rather than being dropped.
